@@ -72,3 +72,5 @@ web_modules/
 .env.*.local
 
 # next.js bui
+
+data
