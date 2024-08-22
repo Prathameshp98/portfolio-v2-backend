@@ -1,6 +1,8 @@
 const Intro = require('../models/Intro');
 const About = require('../models/About');
 const Social = require('../models/Social');
+const Experience = require('../models/Experience');
+const Project = require('../models/Project');
 
 async function getData(req, res, db) {
     const { locale } = req.query;
@@ -32,6 +34,10 @@ async function getData(req, res, db) {
 exports.getIntro = async(req, res, next) => await getData(req, res, Intro);
 
 exports.getAbout = async(req, res, next) => await getData(req, res, About);
+
+exports.getExperience = async(req, res, next) => await getData(req, res, Experience);
+
+exports.getProject = async(req, res, next) => await getData(req, res, Project);
 
 exports.getSocial = async(req, res, next) => {
     Social.find()
