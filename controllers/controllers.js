@@ -3,8 +3,9 @@ const About = require('../models/About');
 const Social = require('../models/Social');
 const Experience = require('../models/Experience');
 const Project = require('../models/Project');
+const Icon = require('../models/Icons');
 
-async function getData(req, res, db) {
+async function getDataWithTranslation(req, res, db) {
     const { locale } = req.query;
 
     if (!locale) {
@@ -29,18 +30,10 @@ async function getData(req, res, db) {
             error: err.message
         });
     }
-}
+};
 
-exports.getIntro = async(req, res, next) => await getData(req, res, Intro);
-
-exports.getAbout = async(req, res, next) => await getData(req, res, About);
-
-exports.getExperience = async(req, res, next) => await getData(req, res, Experience);
-
-exports.getProject = async(req, res, next) => await getData(req, res, Project);
-
-exports.getSocial = async(req, res, next) => {
-    Social.find()
+async function getData(res, db) {
+    db.find()
         .then(async(data) => {
             res.status(200).json({ data: data });
         })
@@ -49,5 +42,17 @@ exports.getSocial = async(req, res, next) => {
                 message: 'An error occurred while fetching data',
                 error: err.message
             });
-        })
+        });
 }
+
+exports.getIntro = async(req, res, next) => await getDataWithTranslation(req, res, Intro);
+
+exports.getAbout = async(req, res, next) => await getDataWithTranslation(req, res, About);
+
+exports.getExperience = async(req, res, next) => await getDataWithTranslation(req, res, Experience);
+
+exports.getProject = async(req, res, next) => await getDataWithTranslation(req, res, Project);
+
+exports.getSocial = async(req, res, next) =>  getData(res, Social);
+
+exports.getIcon = async(req, res, next) => getData(res, Icon);

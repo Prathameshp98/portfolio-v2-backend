@@ -12,4 +12,6 @@ router.get('/experience', controller.getExperience);
 
 router.get('/project', controller.getProject);
 
+router.get('/icon', controller.getIcon);
+
 module.exports = router;
