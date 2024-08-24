@@ -20,9 +20,8 @@ async function getDataWithTranslation(req, res, db) {
         if (document && document.translations && document.translations[0][locale]) {
             res.status(200).json(document.translations[0][locale]);
         } else {
-            res.status(404).json({
-                message: 'Locale not found'
-            });
+            const fallbackLanguage = document.translations[0]['en-US'];
+            res.status(200).json(fallbackLanguage);
         }
     } catch (err) {
         res.status(500).json({
