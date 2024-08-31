@@ -1,4 +1,5 @@
 const Intro = require('../models/Intro');
+const Section = require('../models/Section');
 const About = require('../models/About');
 const Social = require('../models/Social');
 const Experience = require('../models/Experience');
@@ -45,6 +46,8 @@ async function getData(res, db) {
 }
 
 exports.getIntro = async(req, res, next) => await getDataWithTranslation(req, res, Intro);
+
+exports.getSection = async(req, res, next) => await getDataWithTranslation(req, res, Section);
 
 exports.getAbout = async(req, res, next) => await getDataWithTranslation(req, res, About);
 

@@ -4,6 +4,8 @@ const controller = require('../controllers/controllers');
 
 router.get('/intro', controller.getIntro);
 
+router.get('/section', controller.getSection);
+
 router.get('/about', controller.getAbout);
 
 router.get('/social', controller.getSocial);
