@@ -3,6 +3,7 @@ const Section = require('../models/Section');
 const About = require('../models/About');
 const Social = require('../models/Social');
 const Experience = require('../models/Experience');
+const Footer = require('../models/Footer');
 const Project = require('../models/Project');
 const Icon = require('../models/Icons');
 
@@ -54,6 +55,8 @@ exports.getAbout = async(req, res, next) => await getDataWithTranslation(req, re
 exports.getExperience = async(req, res, next) => await getDataWithTranslation(req, res, Experience);
 
 exports.getProject = async(req, res, next) => await getDataWithTranslation(req, res, Project);
+
+exports.getFooter = async(req, res, next) => await getDataWithTranslation(req, res, Footer);
 
 exports.getSocial = async(req, res, next) =>  getData(res, Social);
 
