@@ -5,6 +5,7 @@ const Social = require('../models/Social');
 const Experience = require('../models/Experience');
 const Footer = require('../models/Footer');
 const Project = require('../models/Project');
+const Writing = require('../models/Writing');
 const Icon = require('../models/Icons');
 
 async function getDataWithTranslation(req, res, db) {
@@ -55,6 +56,8 @@ exports.getAbout = async(req, res, next) => await getDataWithTranslation(req, re
 exports.getExperience = async(req, res, next) => await getDataWithTranslation(req, res, Experience);
 
 exports.getProject = async(req, res, next) => await getDataWithTranslation(req, res, Project);
+
+exports.getWriting = async(req, res, next) => await getDataWithTranslation(req, res, Writing);
 
 exports.getFooter = async(req, res, next) => await getDataWithTranslation(req, res, Footer);
 
