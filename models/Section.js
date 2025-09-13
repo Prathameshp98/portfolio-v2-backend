@@ -1,17 +1,7 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const { createTranslationSchema, addCommonMethods } = require('./BaseModel');
 
-const SectionSchema = new Schema({
-    defaultLanguage: {
-        type: String,
-        required: true
-    },
-    translations: {
-        type: Array,
-        required: true
-    }
-}, {
-    timestamps: true
-});
+const SectionSchema = createTranslationSchema();
+addCommonMethods(SectionSchema);
 
 module.exports = mongoose.model('Section', SectionSchema);

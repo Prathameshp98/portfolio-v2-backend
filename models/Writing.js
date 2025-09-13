@@ -1,17 +1,7 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const { createTranslationSchema, addCommonMethods } = require('./BaseModel');
 
-const WritingSchema = new Schema({
-    defaultLanguage: {
-        type: String,
-        required: true
-    },
-    translations: {
-        type: Array,
-        required: true
-    }
-}, {
-    timestamps: true
-});
+const WritingSchema = createTranslationSchema();
+addCommonMethods(WritingSchema);
 
 module.exports = mongoose.model('Writing', WritingSchema);

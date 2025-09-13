@@ -7,60 +7,63 @@ const Footer = require('../models/Footer');
 const Project = require('../models/Project');
 const Writing = require('../models/Writing');
 const Icon = require('../models/Icons');
+const { catchAsync, AppError } = require('../middleware/errorHandler');
+const { sendSuccess, sendError } = require('../utils/responseHelper');
 
-async function getDataWithTranslation(req, res, db) {
-    const { locale } = req.query;
-
-    if (!locale) {
-        return res.status(400).json({
-            message: 'Locale not specified'
-        });
-    }
-
-    try {
-        const document = await db.findOne();
-
-        if (document && document.translations && document.translations[0][locale]) {
-            res.status(200).json(document.translations[0][locale]);
-        } else {
-            const fallbackLanguage = document.translations[0]['en-US'];
-            res.status(200).json(fallbackLanguage);
+/**
+ * Generic controller for models with translation support
+ * @param {Object} Model - Mongoose model
+ * @returns {Function} Express controller function
+ */
+const createTranslationController = (Model) => {
+    return catchAsync(async (req, res, next) => {
+        const { locale } = req.query;
+        
+        if (!locale) {
+            return next(new AppError('Locale parameter is required', 400));
         }
-    } catch (err) {
-        res.status(500).json({
-            message: 'An error occurred while fetching data',
-            error: err.message
-        });
-    }
+
+        const document = await Model.findOne();
+        
+        if (!document) {
+            return next(new AppError('No data found', 404));
+        }
+
+        // Use the model's getTranslation method
+        const translation = document.getTranslation(locale);
+        
+        if (!translation) {
+            return next(new AppError('Translation not found for the specified locale', 404));
+        }
+
+        sendSuccess(res, translation, `${Model.modelName} data retrieved successfully`);
+    });
 };
 
-async function getData(res, db) {
-    db.find()
-        .then(async(data) => {
-            res.status(200).json({ data: data });
-        })
-        .catch(async(err) => {
-            res.status(500).json({
-                message: 'An error occurred while fetching data',
-                error: err.message
-            });
-        });
-}
+/**
+ * Generic controller for simple models without translation
+ * @param {Object} Model - Mongoose model
+ * @returns {Function} Express controller function
+ */
+const createSimpleController = (Model) => {
+    return catchAsync(async (req, res, next) => {
+        const data = await Model.find();
+        
+        if (!data || data.length === 0) {
+            return next(new AppError('No data found', 404));
+        }
 
-exports.getIntro = async(req, res, next) => await getDataWithTranslation(req, res, Intro);
+        sendSuccess(res, data, `${Model.modelName} data retrieved successfully`);
+    });
+};
 
-exports.getSection = async(req, res, next) => await getDataWithTranslation(req, res, Section);
-
-exports.getAbout = async(req, res, next) => await getDataWithTranslation(req, res, About);
-
-exports.getExperience = async(req, res, next) => await getDataWithTranslation(req, res, Experience);
-
-exports.getProject = async(req, res, next) => await getDataWithTranslation(req, res, Project);
-
-exports.getWriting = async(req, res, next) => await getDataWithTranslation(req, res, Writing);
-
-exports.getFooter = async(req, res, next) => await getDataWithTranslation(req, res, Footer);
-
-exports.getSocial = async(req, res, next) =>  getData(res, Social);
-
-exports.getIcon = async(req, res, next) => getData(res, Icon);
+// Export controllers using the factory functions
+exports.getIntro = createTranslationController(Intro);
+exports.getSection = createTranslationController(Section);
+exports.getAbout = createTranslationController(About);
+exports.getExperience = createTranslationController(Experience);
+exports.getProject = createTranslationController(Project);
+exports.getWriting = createTranslationController(Writing);
+exports.getFooter = createTranslationController(Footer);
+exports.getSocial = createSimpleController(Social);
+exports.getIcon = createSimpleController(Icon);

@@ -1,17 +1,7 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const { createTranslationSchema, addCommonMethods } = require('./BaseModel');
 
-const FooterSchema = new Schema({
-    defaultLanguage: {
-        type: String,
-        required: true
-    },
-    translations: {
-        type: Array,
-        required: true
-    }
-}, {
-    timestamps: true
-});
+const FooterSchema = createTranslationSchema();
+addCommonMethods(FooterSchema);
 
 module.exports = mongoose.model('Footer', FooterSchema);
