@@ -13,10 +13,26 @@ const validateLocale = (req, res, next) => {
         return next(new AppError('Locale parameter is required', 400));
     }
     
-    // Basic locale format validation (language-country)
-    const localeRegex = /^[a-z]{2}-[A-Z]{2}$/;
+    // Accept both formats: 'en' or 'en-US'
+    const localeRegex = /^[a-z]{2}(-[A-Z]{2})?$/;
     if (!localeRegex.test(locale)) {
-        return next(new AppError('Invalid locale format. Expected format: xx-XX (e.g., en-US)', 400));
+        return next(new AppError('Invalid locale format. Expected format: xx or xx-XX (e.g., en or en-US)', 400));
+    }
+    
+    // Normalize locale to full format if only language code is provided
+    if (locale.length === 2) {
+        const localeMap = {
+            'en': 'en-US',
+            'es': 'es-ES',
+            'fr': 'fr-FR',
+            'de': 'de-DE',
+            'it': 'it-IT',
+            'pt': 'pt-BR',
+            'ja': 'ja-JP',
+            'ko': 'ko-KR',
+            'zh': 'zh-CN'
+        };
+        req.query.locale = localeMap[locale] || `${locale}-${locale.toUpperCase()}`;
     }
     
     next();
