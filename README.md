@@ -90,6 +90,7 @@ A clean, scalable Node.js/Express backend API for a portfolio website with inter
 - `GET /api/project?locale=en-US` - Projects content
 - `GET /api/writing?locale=en-US` - Writing/blog content
 - `GET /api/footer?locale=en-US` - Footer content
+- `GET /api/certifications?locale=en-US` - Certifications content
 
 ### Simple Endpoints (No locale required)
 - `GET /api/social` - Social media links

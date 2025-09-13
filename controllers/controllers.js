@@ -7,6 +7,7 @@ const Footer = require('../models/Footer');
 const Project = require('../models/Project');
 const Writing = require('../models/Writing');
 const Icon = require('../models/Icons');
+const Certifications = require('../models/Certifications');
 const { catchAsync, AppError } = require('../middleware/errorHandler');
 const { sendSuccess, sendError } = require('../utils/responseHelper');
 
@@ -65,5 +66,6 @@ exports.getExperience = createTranslationController(Experience);
 exports.getProject = createTranslationController(Project);
 exports.getWriting = createTranslationController(Writing);
 exports.getFooter = createTranslationController(Footer);
+exports.getCertifications = createTranslationController(Certifications);
 exports.getSocial = createSimpleController(Social);
 exports.getIcon = createSimpleController(Icon);

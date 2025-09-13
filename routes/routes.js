@@ -11,6 +11,7 @@ router.get('/experience', validateLocale, controller.getExperience);
 router.get('/project', validateLocale, controller.getProject);
 router.get('/writing', validateLocale, controller.getWriting);
 router.get('/footer', validateLocale, controller.getFooter);
+router.get('/certifications', validateLocale, controller.getCertifications);
 
 // Routes without translation support
 router.get('/social', controller.getSocial);
