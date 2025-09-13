@@ -23,6 +23,32 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(sanitizeInput);
 app.use(corsMiddleware);
 
+// Root endpoint - API documentation
+app.get('/', (req, res) => {
+    res.status(200).json({
+        success: true,
+        message: 'Portfolio Backend API',
+        version: '2.0.0',
+        endpoints: {
+            health: '/health',
+            api: '/api/*'
+        },
+        documentation: {
+            'GET /health': 'Server health check',
+            'GET /api/intro?locale=en-US': 'Introduction content',
+            'GET /api/about?locale=en-US': 'About section content',
+            'GET /api/experience?locale=en-US': 'Experience content',
+            'GET /api/project?locale=en-US': 'Projects content',
+            'GET /api/writing?locale=en-US': 'Writing content',
+            'GET /api/footer?locale=en-US': 'Footer content',
+            'GET /api/certifications?locale=en-US': 'Certifications content',
+            'GET /api/social': 'Social media links',
+            'GET /api/icon': 'Icon data'
+        },
+        supportedLocales: ['en-US', 'es-ES', 'fr-FR', 'de-DE', 'it-IT', 'pt-BR', 'ja-JP', 'ko-KR', 'zh-CN']
+    });
+});
+
 // Health check endpoint
 app.get('/health', (req, res) => {
     res.status(200).json({
@@ -31,6 +57,11 @@ app.get('/health', (req, res) => {
         timestamp: new Date().toISOString(),
         environment: process.env.NODE_ENV || 'development'
     });
+});
+
+// Favicon endpoint to prevent 404 logs
+app.get('/favicon.ico', (req, res) => {
+    res.status(204).end();
 });
 
 // API routes
